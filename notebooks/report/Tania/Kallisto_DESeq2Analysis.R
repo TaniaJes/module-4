@@ -1,27 +1,8 @@
----
-title: "DESeq2 Analysis"
-author: "Tania J. González"
-date: "3/20/2020"
-output:
-  pdf_document: default
-  html_document: default
----
-
-```{r setup, include=FALSE, roo}
-knitr::opts_chunk$set(echo = TRUE)
-# to setup working directory for notebook chunks
-knitr::opts_knit$set(root.dir = "~/NYU-classes/bioinformatics/module-4/data")
-
-### SET WORKING DIRECTORY
-# note: this directory should be populated with the raw counts file
-# setwd("/Users/taniagonzalezrobles/NYU-classes/bioinformatics/module-4/data")
-```
-
 ##########################################################################################
-# The aim of this script is to perform differential gene expression analysis with DESeq2 #
+# This script performs differential gene expression analysis with DESeq2 #
 ##########################################################################################
 
-```{r Load Libraries, message=FALSE, warning=FALSE}
+### LOAD REQUIRED LIBRARIES
 library("DESeq2")
 library("org.Hs.eg.db")
 library("AnnotationDbi")
@@ -30,58 +11,44 @@ library("ashr") # library for type = "ashr" object used to generate DEseq result
 library("gridExtra")
 library("plotly")
 library("pheatmap")
-library("EnhancedVolcano")
+library("EnhancedVolcano") # pretty volcano plots
 library("RColorBrewer")
 library("biomaRt")
-```
 
-### DATA IMPORT ###
-*Note:* Make sure column names in the sample(table) file and counts file are exactly the same and in the same order
-```{r Import Raw Data, message=FALSE, warning=FALSE}
-# Import samples information
-samples <- read.table("~/NYU-classes/bioinformatics/module-4/data/sample_info.txt", header = TRUE)
+### SET WORKING DIRECTORY
+# note: this directory should be populated with the raw counts file
+setwd("~/NYU-classes/bioinformatics/module-4/data")
 
-# featureCounts sample matrix
-featCounts <- read.table("~/NYU-classes/bioinformatics/module-4/data/featureCounts_output/geneCounts-output.txt", header = T, row.names = 1)
-featCounts <- featCounts[, rownames(samples)] # column reordering to match samples order
-Dataset <- DESeqDataSetFromMatrix(countData = featCounts, colData = samples, design = ~batch + condition)
+
+### Import count table and details on experimental design
+# NB: Make sure column names in the sample(table) file and counts file are exactly the same and in the same order
+samples <- read.table("./sample_info.txt", header = TRUE)
+kallistoCounts <- read.table("./kallisto_output/kallisto-gene-output.txt", header = T, row.names = 1)
+kallistoCounts <- kallistoCounts[, rownames(samples)] # column reordering to match samples order
+Dataset <- DESeqDataSetFromMatrix(countData = kallistoCounts, colData = samples, design = ~batch + condition)
 # Note: Always end with conditions for 'design' variable
 
-# Import count table and details on experimental design
-kallistoCounts <- read.table("./Kallisto-output.txt", header = TRUE, row.names = 1) 
-samples <- read.table("sample.txt", header = TRUE)
-Dataset <- DESeqDataSetFromMatrix(countData = CountTable, colData = samples, design = ~batch + condition)
-#Dataset <- DESeqDataSetFromMatrix(countData = CountTable, colData=samples, design=~condition)
 
-```
-
-### PRELIMINARY ANALYSES: Data assessment ###
-+ The first steps in your analysis should focus on better understanding the relationship of the datasets being studied. This can be simply achieved by generating a PCA plot showing the relationship of your samples. 
-```{r Batch Effect Correction, message=FALSE, warning=FALSE}
+### PRELIMINARY ANALYSES ###
 # First we transform our raw count data using a variance stabilizing transformation (VST) that roughly mirrors how DeSeq2 models the data.
 vst1 <- varianceStabilizingTransformation(Dataset, blind = FALSE)
-
-# Then we plot a PCA, grouping and coloring our datasets according to batch
-plotPCA(vst1, "condition")
-
-# note that you can attach additional information based on the column headers in your sample table
-plotPCA(vst1, c("condition","batch"))
+plotPCA(vst1, "condition") # Then we plot a PCA, grouping and coloring our datasets according to batch
+plotPCA(vst1, c("condition","batch")) 
+# note: you can attach additional information based on the column headers in your sample table
 
 # We can also attempt to replicate the batch effect correction performed by DeSeq2 using the `limma::removeBatchEffect` function.
 vst2 <- varianceStabilizingTransformation(Dataset, blind = FALSE)
 assay(vst2) <- limma::removeBatchEffect(assay(vst2), vst2$batch)
 plotPCA(vst2, "condition")
-```
+plotPCA(vst2, c("condition","batch"))
 
-+ We can also calculate and plot sample distances using either the batch corrected (vst2) or uncorrected (vst1) data.
-```{r Sample Heatmaps, message=FALSE, warning=FALSE}
 # uncorrected
 sampleDists <- dist( t( assay(vst1) ) )
 sampleDists
 sampleDistMatrix <- as.matrix( sampleDists )
 colnames(sampleDistMatrix) <- NULL
 colors <- colorRampPalette( rev(brewer.pal(9, "Reds")) )(255)
-pheatmap(sampleDistMatrix, clustering_distance_rows=sampleDists, clustering_distance_cols=sampleDists, col=colors)
+pheatmap(sampleDistMatrix, clustering_distance_rows=sampleDists, clustering_distance_cols=sampleDists, col=colors, main = "Samples without batch correlation")
 
 # corrected
 sampleDistsCorr <- dist( t( assay(vst2) ) )
@@ -89,67 +56,67 @@ sampleDistsCorr
 sampleDistCorrMatrix <- as.matrix( sampleDistsCorr )
 colnames(sampleDistCorrMatrix) <- NULL
 colors <- colorRampPalette( rev(brewer.pal(9, "Purples")) )(255)
-pheatmap(sampleDistCorrMatrix, clustering_distance_rows=sampleDists, clustering_distance_cols=sampleDists, col=colors, main = "DESeq2 batch correlation")
+pheatmap(sampleDistCorrMatrix, clustering_distance_rows=sampleDists, clustering_distance_cols=sampleDists, col=colors, main = "Samples with batch correlation")
 
 # At this stage, you should have a good sense of how your samples cluster and the effect of batch correction (if used)
 # In simple RNA-Seq situations (control vs treatment, 3-5 bioreps each), this is all that should be required. 
 # For more complex situations, you will need to dive deep into working of DeSeq2
 # https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
-```
+
 
 ### BASIC DGE ANALYSIS USING DESEQ2 ###
-```{r DESeq2 Processing, message=FALSE, warning=FALSE}
+
 # Run DESEQ and generate a simple plot showing the distribution of regulated and unregulated genes
 DatasetProcessed <- DESeq(Dataset) # runs DESEQ
-plotMA(DatasetProcessed, main="DESeq2", ylim=c(-5,5)) # red dots have p val < 0.05
+plotMA(DatasetProcessed, main="Heteroskedasticity assessment", ylim=c(-8,15)) # red dots have p val < 0.05
 
 # Next we perform a contrast analysis to produce a list of differentially regulated genes between our two conditions
 # First we set CTRL dataset as baseline
-Dataset$condition <- relevel(Dataset$condition, "shCtrl")
+Dataset$condition <- relevel(Dataset$condition, "siCtrlBH5")
 
 # Next we create our results object while performing shrinkage of effect size 
 # (this reduces the impact of apparent gross changes in low expressed genes)
-res1 <- lfcShrink(DatasetProcessed, contrast=c("condition","shEIF3D","shCtrl"), type = "ashr")
-plotMA(res1, main="DESeq2-LFC", ylim=c(-5,5))
+res1 <- lfcShrink(DatasetProcessed, contrast=c("condition","siCtrlBH5_dsDNA","siCtrlBH5"), type = "ashr")
+plotMA(res1, main="Restored heteroskedasticity", ylim=c(-8,15))
 
 # Data summary
 summary(results(DatasetProcessed, alpha = 0.01, lfcThreshold = 1))
-# out of 19471 with nonzero total read count
+# out of 15324 with nonzero total read count
 # adjusted p-value < 0.01
-# LFC > 1.00 (up)    : 6, 0.031%
-# LFC < -1.00 (down) : 19, 0.098%
+# LFC > 1.00 (up)    : 115, 0.75%
+# LFC < -1.00 (down) : 16, 0.1%
 # outliers [1]       : 0, 0%
-# low counts [2]     : 0, 0%
+# low counts [2]     : 10237, 67%
+# (mean count < 7)
 
 # Here we modify our output data to include two additional columns that contain the baseMeans (a proxy for counts)
 # This is useful for downstream filtering of lowly expressed genes
-baseMean.shCtrl <-  rowMeans(counts(DatasetProcessed,normalized=TRUE)[,DatasetProcessed$condition == "shCtrl"])
-baseMean.shEIF3D <-  rowMeans(counts(DatasetProcessed,normalized=TRUE)[,DatasetProcessed$condition == "shEIF3D"])
+baseMean.siCtrlBH5 <-  rowMeans(counts(DatasetProcessed,normalized=TRUE)[,DatasetProcessed$condition == "siCtrlBH5"])
+baseMean.siCtrlBH5_dsDNA <-  rowMeans(counts(DatasetProcessed,normalized=TRUE)[,DatasetProcessed$condition == "siCtrlBH5_dsDNA"])
 
-res1 <-  cbind(as.data.frame(res1), baseMean.shCtrl, baseMean.shEIF3D)
+res1 <-  cbind(as.data.frame(res1), baseMean.siCtrlBH5, baseMean.siCtrlBH5_dsDNA)
 
 # Here we add two further columns, the gene symbol (common name) and entrez ID - both of which may be useful downstream
 res1$symbol <- mapIds(org.Hs.eg.db, keys=row.names(res1), column="SYMBOL", keytype="ENSEMBL", multiVals="first") # MAPS GENE IDs
 res1$entrez <- mapIds(org.Hs.eg.db, keys=row.names(res1), column="ENTREZID", keytype="ENSEMBL", multiVals="first")
 
 # Finally we write the complete results object to an outfile
-write.csv(res1, "DGEanalysis_DESeq2.csv", row.names=TRUE)
-```
+write.csv(res1, "kallisto_DESeq2.csv", row.names=TRUE)
+
 
 ### PLOTTING AND DATA VISUALIZATION ###
-```{r Data Visualization, message=FALSE, warning=FALSE}
-#BiocManager::install("EnhancedVolcano")
-#library("EnhancedVolcano")
 
 ## Volcano plot
-EnhancedVolcano(toptable = res1, x = "log2FoldChange", y = "pvalue", legendVisible = F,
-                lab = res1$symbol, pCutoff = 10e-6, FCcutoff = 1, xlim = c(-5, 5),
-                title = "DESeq2 results", subtitle = "Differential Expression Analysis", caption = NULL,
+EnhancedVolcano(toptable = res1, x = "log2FoldChange", y = "pvalue",
+                lab = res1$symbol, pCutoff = 10e-6, FCcutoff = 1, xlim = c(-5, 5), ylim = c(-20, 100),
+                title = "Kallisto DESeq2 results", subtitle = "Differential Expression Analysis", caption = NULL,
                 col = c("grey30", "forestgreen", "purple", "dark orange"))
+
 
 ## Plot heatmap - top20 variable genes
 rld <- rlog(DatasetProcessed) # apply "regularized log" transformation to DESeqDataSet
 top20Genes <- order(rowMeans(assay(rld)), decreasing = T)[1:20] # Extract (assay) matrix for top 20 variable genes
+# bottom20Genes <- 
 df <- as.data.frame(colData(DatasetProcessed)) # create annotation matrix: c("batch", "condition", "sizeFactor")
 mat <- assay(rld)[top20Genes, ] # generate new matrix w/top20 variable genes
 mat<-mat-rowMeans(mat) # plot distances from the mean, makes heatmap clearer (why is this important?)
@@ -158,12 +125,13 @@ mart <- biomaRt::useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensemb
 # assuming human, to change geneID to symbols. 
 gns <- getBM(c("hgnc_symbol","ensembl_gene_id"), "ensembl_gene_id", row.names(mat), mart)
 row.names(mat)[match(gns[,2], row.names(mat))] <- gns[,1] # to change geneIDs to symbol in "mat" matrix.
-pheatmap(mat, cluster_rows=TRUE, show_rownames=TRUE, cluster_cols=TRUE, annotation_col=df, main = "DESeq2 - Top 20 Variable Genes")
+pheatmap(mat, cluster_rows=TRUE, show_rownames=TRUE, cluster_cols=TRUE, annotation_col=df, main = "Kallisto - Top 20 Variable Genes")
 
 # Plot heatmap - sorting by padj and log2fc
 # PICK ALL GENES WITH pADJ < 0.01 AND THEN SUBSET FOR THOSE WITH Log2FC > 1 THEN PICK TOP 25 HITS
-subset <- head((subset(res1, res1$padj < 0.01)), n=25)  
-sigGenes <- rownames(subset)
+subset.top <- head((subset(res1, res1$padj < 0.01)), n=25)  
+# subset.bottom <- tail((subset(res1, res1$padj < 0.01)), n=25)
+sigGenes <- rownames(subset.top)
 rows <- match(sigGenes, row.names(rld))
 mat <- assay(rld)[rows,] # to extract matrix 
 mat <- mat-rowMeans(mat) ## plot distances from the mean, makes heatmap clearer
@@ -171,5 +139,8 @@ mart <- useMart("ensembl","hsapiens_gene_ensembl") ## assuming human
 gns <- getBM(c("hgnc_symbol","ensembl_gene_id"), "ensembl_gene_id", row.names(mat), mart)
 row.names(mat)[match(gns[,2], row.names(mat))] <- gns[,1]
 df <- as.data.frame(colData(DatasetProcessed))
-pheatmap(mat, cluster_rows=TRUE, show_rownames=TRUE, cluster_cols=TRUE, annotation_col=df, main = "DESeq2 - Top 25 most significant genes") 
-```
+pheatmap(mat, cluster_rows=TRUE, show_rownames=TRUE, cluster_cols=TRUE, annotation_col=df, main = "Kallisto - Top 25 most significant genes") 
+
+
+### END OF CODE ###
+
