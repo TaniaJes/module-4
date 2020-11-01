@@ -34,3 +34,7 @@ ids<-rownames(counts)
 
 ### ROUND VALUES (DESEQ2 DOES NOT LIKE FRACTIONS), AND WRITE TO OUTPUT FILE
 write.table(round(counts),paste("kallisto-gene-output",".txt",sep=""), row.names=ids, quote=F, col.names=T, sep="\t")
+
+
+### END OF CODE ###
+
