@@ -1,0 +1,13 @@
+{
+	"n_targets": 100566,
+	"n_bootstraps": 100,
+	"n_processed": 25803024,
+	"n_pseudoaligned": 280893,
+	"n_unique": 158716,
+	"p_pseudoaligned": 1.1,
+	"p_unique": 0.6,
+	"kallisto_version": "0.44.0",
+	"index_version": 10,
+	"start_time": "Sun Nov  1 10:31:07 2020",
+	"call": "kallisto quant -i /gpfs/scratch/ouyana01/hw1_raw/module-4/data/HomoSapiens.transcript.index -o /gpfs/scratch/ouyana01/hw1_raw/module-4/data/SRR7049615 -b 100 --bias --fr-stranded /gpfs/scratch/ouyana01/hw1_raw/module-3/data/SRR7049615_1.fastq /gpfs/scratch/ouyana01/hw1_raw/module-3/data/SRR7049615_2.fastq"
+}
