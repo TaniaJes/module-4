@@ -1,0 +1,15 @@
+
+[quant] fragment length distribution will be estimated from the data
+[index] k-mer length: 31
+[index] number of targets: 100,566
+[index] number of k-mers: 82,431,789
+[index] number of equivalence classes: 396,181
+[quant] running in paired-end mode
+[quant] will process pair 1: SRR7049615/SRR7049615_1_val_1.fq
+                             SRR7049615/SRR7049615_2_val_2.fq
+[quant] finding pseudoalignments for the reads ... done
+[quant] processed 25,498,530 reads, 23,512,154 reads pseudoaligned
+[quant] estimated average fragment length: 170.137
+[   em] quantifying the abundances ... done
+[   em] the Expectation-Maximization algorithm ran for 1,371 rounds
+

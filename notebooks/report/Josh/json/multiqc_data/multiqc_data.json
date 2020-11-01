@@ -1,0 +1,270 @@
+{
+    "report_data_sources": {
+        "Kallisto": {
+            "all_sections": {
+                "SRR7049609_1_val_1": "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049609.txt",
+                "SRR7049610_1_val_1": "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049610.txt",
+                "SRR7049611_1_val_1": "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049611.txt",
+                "SRR7049612_1_val_1": "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049612.txt",
+                "SRR7049615_1_val_1": "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049615.txt",
+                "SRR7049616_1_val_1": "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049616.txt"
+            }
+        }
+    },
+    "report_general_stats_data": [
+        {
+            "SRR7049609_1_val_1": {
+                "total_reads": 25077917.0,
+                "pseudoaligned_reads": 23055531.0,
+                "not_pseudoaligned_reads": 2022386.0,
+                "percent_aligned": 91.9355901847829,
+                "fragment_length": 158.707
+            },
+            "SRR7049610_1_val_1": {
+                "total_reads": 26571657.0,
+                "pseudoaligned_reads": 24297068.0,
+                "not_pseudoaligned_reads": 2274589.0,
+                "percent_aligned": 91.43979240737602,
+                "fragment_length": 160.64
+            },
+            "SRR7049611_1_val_1": {
+                "total_reads": 24226939.0,
+                "pseudoaligned_reads": 22169803.0,
+                "not_pseudoaligned_reads": 2057136.0,
+                "percent_aligned": 91.50889016561275,
+                "fragment_length": 218.259
+            },
+            "SRR7049612_1_val_1": {
+                "total_reads": 27479272.0,
+                "pseudoaligned_reads": 25332309.0,
+                "not_pseudoaligned_reads": 2146963.0,
+                "percent_aligned": 92.18697278443184,
+                "fragment_length": 176.831
+            },
+            "SRR7049615_1_val_1": {
+                "total_reads": 25498530.0,
+                "pseudoaligned_reads": 23512154.0,
+                "not_pseudoaligned_reads": 1986376.0,
+                "percent_aligned": 92.20984111633102,
+                "fragment_length": 170.137
+            },
+            "SRR7049616_1_val_1": {
+                "total_reads": 24604443.0,
+                "pseudoaligned_reads": 22415157.0,
+                "not_pseudoaligned_reads": 2189286.0,
+                "percent_aligned": 91.10207046751678,
+                "fragment_length": 170.232
+            }
+        }
+    ],
+    "report_general_stats_headers": [
+        {
+            "fragment_length": {
+                "title": "Frag Length",
+                "description": "Estimated average fragment length",
+                "min": 0,
+                "suffix": "bp",
+                "scale": "RdYlGn",
+                "namespace": "Kallisto",
+                "rid": "mqc-generalstats-kallisto-fragment_length",
+                "format": "{:,.1f}",
+                "colour": "55,126,184",
+                "hidden": null,
+                "max": null,
+                "ceiling": null,
+                "floor": null,
+                "minRange": null,
+                "shared_key": null,
+                "modify": null,
+                "placement": 1000.0,
+                "dmax": 218.259,
+                "dmin": 0.0
+            },
+            "percent_aligned": {
+                "title": "% Aligned",
+                "description": "% processed reads that were pseudoaligned",
+                "max": 100,
+                "min": 0,
+                "suffix": "%",
+                "scale": "YlGn",
+                "namespace": "Kallisto",
+                "rid": "mqc-generalstats-kallisto-percent_aligned",
+                "format": "{:,.1f}",
+                "colour": "55,126,184",
+                "hidden": null,
+                "ceiling": null,
+                "floor": null,
+                "minRange": null,
+                "shared_key": null,
+                "modify": null,
+                "placement": 1000.0,
+                "dmax": 100.0,
+                "dmin": 0.0
+            },
+            "pseudoaligned_reads": {
+                "title": "M Aligned",
+                "description": "Pseudoaligned reads (millions)",
+                "min": 0,
+                "scale": "PuRd",
+                "modify": 1e-06,
+                "shared_key": "read_count",
+                "namespace": "Kallisto",
+                "rid": "mqc-generalstats-kallisto-pseudoaligned_reads",
+                "format": "{:,.1f}",
+                "colour": "55,126,184",
+                "hidden": null,
+                "max": null,
+                "ceiling": null,
+                "floor": null,
+                "minRange": null,
+                "placement": 1000.0,
+                "dmax": 25.332309,
+                "dmin": 0.0
+            }
+        }
+    ],
+    "report_multiqc_command": "/Users/a/opt/anaconda3/envs/tf-keras/bin/multiqc .",
+    "report_plot_data": {
+        "kallisto_alignment": {
+            "plot_type": "bar_graph",
+            "samples": [
+                [
+                    "SRR7049609_1_val_1",
+                    "SRR7049610_1_val_1",
+                    "SRR7049611_1_val_1",
+                    "SRR7049612_1_val_1",
+                    "SRR7049615_1_val_1",
+                    "SRR7049616_1_val_1"
+                ]
+            ],
+            "datasets": [
+                [
+                    {
+                        "name": "Pseudoaligned",
+                        "data": [
+                            23055531.0,
+                            24297068.0,
+                            22169803.0,
+                            25332309.0,
+                            23512154.0,
+                            22415157.0
+                        ],
+                        "color": "#437bb1"
+                    },
+                    {
+                        "name": "Not aligned",
+                        "data": [
+                            2022386.0,
+                            2274589.0,
+                            2057136.0,
+                            2146963.0,
+                            1986376.0,
+                            2189286.0
+                        ],
+                        "color": "#b1084c"
+                    }
+                ]
+            ],
+            "config": {
+                "id": "kallisto_alignment",
+                "title": "Kallisto: Alignment Scores",
+                "ylab": "# Reads",
+                "cpswitch_counts_label": "Number of Reads"
+            }
+        }
+    },
+    "report_saved_raw_data": {
+        "multiqc_kallisto": {
+            "SRR7049609_1_val_1": {
+                "total_reads": 25077917.0,
+                "pseudoaligned_reads": 23055531.0,
+                "not_pseudoaligned_reads": 2022386.0,
+                "percent_aligned": 91.9355901847829,
+                "fragment_length": 158.707
+            },
+            "SRR7049610_1_val_1": {
+                "total_reads": 26571657.0,
+                "pseudoaligned_reads": 24297068.0,
+                "not_pseudoaligned_reads": 2274589.0,
+                "percent_aligned": 91.43979240737602,
+                "fragment_length": 160.64
+            },
+            "SRR7049611_1_val_1": {
+                "total_reads": 24226939.0,
+                "pseudoaligned_reads": 22169803.0,
+                "not_pseudoaligned_reads": 2057136.0,
+                "percent_aligned": 91.50889016561275,
+                "fragment_length": 218.259
+            },
+            "SRR7049612_1_val_1": {
+                "total_reads": 27479272.0,
+                "pseudoaligned_reads": 25332309.0,
+                "not_pseudoaligned_reads": 2146963.0,
+                "percent_aligned": 92.18697278443184,
+                "fragment_length": 176.831
+            },
+            "SRR7049615_1_val_1": {
+                "total_reads": 25498530.0,
+                "pseudoaligned_reads": 23512154.0,
+                "not_pseudoaligned_reads": 1986376.0,
+                "percent_aligned": 92.20984111633102,
+                "fragment_length": 170.137
+            },
+            "SRR7049616_1_val_1": {
+                "total_reads": 24604443.0,
+                "pseudoaligned_reads": 22415157.0,
+                "not_pseudoaligned_reads": 2189286.0,
+                "percent_aligned": 91.10207046751678,
+                "fragment_length": 170.232
+            }
+        },
+        "multiqc_general_stats": {
+            "SRR7049609_1_val_1": {
+                "Kallisto_mqc-generalstats-kallisto-fragment_length": 158.707,
+                "Kallisto_mqc-generalstats-kallisto-percent_aligned": 91.9355901847829,
+                "Kallisto_mqc-generalstats-kallisto-pseudoaligned_reads": 23055531.0
+            },
+            "SRR7049610_1_val_1": {
+                "Kallisto_mqc-generalstats-kallisto-fragment_length": 160.64,
+                "Kallisto_mqc-generalstats-kallisto-percent_aligned": 91.43979240737602,
+                "Kallisto_mqc-generalstats-kallisto-pseudoaligned_reads": 24297068.0
+            },
+            "SRR7049611_1_val_1": {
+                "Kallisto_mqc-generalstats-kallisto-fragment_length": 218.259,
+                "Kallisto_mqc-generalstats-kallisto-percent_aligned": 91.50889016561275,
+                "Kallisto_mqc-generalstats-kallisto-pseudoaligned_reads": 22169803.0
+            },
+            "SRR7049612_1_val_1": {
+                "Kallisto_mqc-generalstats-kallisto-fragment_length": 176.831,
+                "Kallisto_mqc-generalstats-kallisto-percent_aligned": 92.18697278443184,
+                "Kallisto_mqc-generalstats-kallisto-pseudoaligned_reads": 25332309.0
+            },
+            "SRR7049615_1_val_1": {
+                "Kallisto_mqc-generalstats-kallisto-fragment_length": 170.137,
+                "Kallisto_mqc-generalstats-kallisto-percent_aligned": 92.20984111633102,
+                "Kallisto_mqc-generalstats-kallisto-pseudoaligned_reads": 23512154.0
+            },
+            "SRR7049616_1_val_1": {
+                "Kallisto_mqc-generalstats-kallisto-fragment_length": 170.232,
+                "Kallisto_mqc-generalstats-kallisto-percent_aligned": 91.10207046751678,
+                "Kallisto_mqc-generalstats-kallisto-pseudoaligned_reads": 22415157.0
+            }
+        }
+    },
+    "config_analysis_dir_abs": [
+        "/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json"
+    ],
+    "config_analysis_dir": [
+        "."
+    ],
+    "config_creation_date": "2020-10-29, 16:36",
+    "config_git_hash": null,
+    "config_intro_text": null,
+    "config_report_comment": null,
+    "config_report_header_info": null,
+    "config_script_path": "/Users/a/opt/anaconda3/envs/tf-keras/lib/python3.7/site-packages/multiqc/utils",
+    "config_short_version": "1.9",
+    "config_subtitle": null,
+    "config_title": null,
+    "config_version": "1.9"
+}

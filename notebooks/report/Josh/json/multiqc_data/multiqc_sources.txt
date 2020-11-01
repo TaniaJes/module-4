@@ -1,0 +1,7 @@
+Module	Section	Sample Name	Source
+Kallisto	all_sections	SRR7049609_1_val_1	/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049609.txt
+Kallisto	all_sections	SRR7049610_1_val_1	/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049610.txt
+Kallisto	all_sections	SRR7049611_1_val_1	/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049611.txt
+Kallisto	all_sections	SRR7049612_1_val_1	/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049612.txt
+Kallisto	all_sections	SRR7049615_1_val_1	/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049615.txt
+Kallisto	all_sections	SRR7049616_1_val_1	/Volumes/GoogleDrive/My Drive/Dropbox-GD/NYU/GS1/Courses/Fall/Bioinformatics/3/json/SRR7049616.txt

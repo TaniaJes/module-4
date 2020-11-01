@@ -1,0 +1,13 @@
+{
+	"n_targets": 100566,
+	"n_bootstraps": 100,
+	"n_processed": 25398238,
+	"n_pseudoaligned": 23268663,
+	"n_unique": 6678804,
+	"p_pseudoaligned": 91.6,
+	"p_unique": 26.3,
+	"kallisto_version": "0.44.0",
+	"index_version": 10,
+	"start_time": "Fri Oct 23 12:08:14 2020",
+	"call": "kallisto quant -t 20 -i transcripts.idx -o SRR7049609 -b 100 SRR7049609_1.fastq SRR7049609_2.fastq"
+}
